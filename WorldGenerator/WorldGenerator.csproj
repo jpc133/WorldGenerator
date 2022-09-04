@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LSystem\WorldGenerator.LSystem.csproj" />
     <ProjectReference Include="..\WorldGenerator.Geometry\WorldGenerator.Geometry.csproj" />
+    <ProjectReference Include="..\WorldGenerator.LSystem\WorldGenerator.LSystem.csproj" />
   </ItemGroup>
 
 </Project>

@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LSystem\WorldGenerator.LSystem.csproj" />
+    <ProjectReference Include="..\WorldGenerator.LSystem\WorldGenerator.LSystem.csproj" />
   </ItemGroup>
 
 </Project>
