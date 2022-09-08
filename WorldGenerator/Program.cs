@@ -1,17 +1,46 @@
 ﻿using OpenSimplex;
 using System.Text;
 using WorldGenerator;
+using WorldGenerator.CellularAutomata.Engine;
+using WorldGenerator.CellularAutomata.Engine.Rules;
 using WorldGenerator.Geometry;
 using WorldGenerator.LSystem;
 using WorldGenerator.Noise;
 
-Random random = new(21);
+Random random = new(1);
 
-Rule[] rules = new Rule[] { new Rule('F', new string[] { "[+F][-F]", "[+F]F[-F]", "[-F]F[+F]" } ) };
+int[] mapSize = { 150, 150 };
 
-Generator lgenerator = new(rules, "[F]--F", 10, random, 0.3f);
-Line[] roadLines = SentenceToLines.CreateLines(lgenerator.GenerateSentence(), 16);
-int[,] roadsLayer = LinesToGrid.CreateGridFromLines(roadLines);
+bool[,] map = (bool[,])Array.CreateInstance(typeof(bool), mapSize[0], mapSize[1]);
+map[49, 49] = true;
+map[75, 75] = true;
+
+
+World world = new(map, CellularRuleBuilder.GetRules(random));
+
+for (int i = 0; i < 50; i++)
+{
+    world.RunStep();
+}
+
+int[,] mapInt = new int[mapSize[0], mapSize[1]];
+for (int x = 0; x < mapSize[0]; x++)
+{
+    for (int y = 0; y < mapSize[1]; y++)
+    {
+        mapInt[x, y] = map[x, y] ? 1 : 0;
+    }
+}
+
+//Console.WriteLine(Utilities.GetStringOfMap(world.GetWorld()));
+
+//Rule[] rules = new Rule[] { new Rule('F', new string[] { "[+F][-F]", "[+F]F[-F]", "[-F]F[+F]" }) };
+
+//Generator lgenerator = new(rules, "[F]--F", 10, random, 0.3f);
+//Line[] roadLines = SentenceToLines.CreateLines(lgenerator.GenerateSentence(), 16);
+//int[,] roadsLayer = LinesToGrid.CreateGridFromLines(roadLines);
+int[,] roadsLayer = mapInt;
+
 
 OpenSimplexNoise openSimplexNoise = new();
 double[,] treeNoise = new double[roadsLayer.GetLength(0), roadsLayer.GetLength(1)];

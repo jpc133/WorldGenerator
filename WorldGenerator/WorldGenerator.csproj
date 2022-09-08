@@ -8,8 +8,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WorldGenerator.CellularAutomata.Engine\WorldGenerator.CellularAutomata.Engine.csproj" />
     <ProjectReference Include="..\WorldGenerator.Geometry\WorldGenerator.Geometry.csproj" />
     <ProjectReference Include="..\WorldGenerator.LSystem\WorldGenerator.LSystem.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="CellularRuleTemplates\roadGap3.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="CellularRuleTemplates\roadGap2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="CellularRuleTemplates\roadGap.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="CellularRuleTemplates\corner.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="CellularRuleTemplates\threeNorth.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="CellularRuleTemplates\oneNorth.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

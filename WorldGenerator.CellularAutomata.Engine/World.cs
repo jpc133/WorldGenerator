@@ -67,5 +67,10 @@
 
             return world;
         }
+
+        public bool[,] GetWorld()
+        {
+            return world;
+        }
     }
 }
