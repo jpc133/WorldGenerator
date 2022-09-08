@@ -17,7 +17,7 @@ namespace WorldGenerator
                     new PositionBasedRule( Utilities.GetMapFromFile("CellularRuleTemplates/oneNorth.txt"),true,true,true),
                     new PositionBasedRule( Utilities.GetMapFromFile("CellularRuleTemplates/threeNorth.txt"),true,true,true)
                 }, 
-                new int[] {20, 1}, random, false),
+                new int[] {100, 1}, random, false),
                 new PositionBasedRule( Utilities.GetMapFromFile("CellularRuleTemplates/corner.txt"),true,true,true),
                 new PositionBasedRule( Utilities.GetMapFromFile("CellularRuleTemplates/roadGap.txt"),true,true,true),
                 new PositionBasedRule( Utilities.GetMapFromFile("CellularRuleTemplates/roadGap2.txt"),true,true,true),

@@ -9,11 +9,51 @@ using WorldGenerator.Noise;
 
 Random random = new(1);
 
-int[] mapSize = { 150, 150 };
+int[] mapSize = { 300, 300 };
+int cityNodesToGenerate = 5;
+int interCityNodesToGenerate = 2;
+int cityNodeRange = 10;
 
 bool[,] map = (bool[,])Array.CreateInstance(typeof(bool), mapSize[0], mapSize[1]);
-map[49, 49] = true;
-map[75, 75] = true;
+
+List<Point[]> cityNodes = new();
+for (int i = 0; i < cityNodesToGenerate; i++)
+{
+    Point cityNode = new Point(random.Next(0, mapSize[0]), random.Next(0, mapSize[1]));
+    Point[] interCityNodes = new Point[interCityNodesToGenerate];
+    for (int i2 = 0; i2 < interCityNodesToGenerate; i2++)
+    {
+        interCityNodes[i2] = new Point(random.Next(cityNode.x - cityNodeRange, cityNode.x + cityNodeRange), random.Next(cityNode.y - cityNodeRange, cityNode.y + cityNodeRange));
+    }
+    cityNodes.Add(interCityNodes);
+}
+
+foreach (Point[] interCityPoints in cityNodes)
+{
+    foreach (Point cityNode in interCityPoints)
+    {
+        Point normalisedPoint = cityNode;
+        if (normalisedPoint.x < 0)
+        {
+            normalisedPoint.x = 0;
+        }
+        else if(normalisedPoint.x >= mapSize[0])
+        {
+            normalisedPoint.x = mapSize[0] - 1;
+        }
+
+        if (normalisedPoint.y < 0)
+        {
+            normalisedPoint.y = 0;
+        }
+        else if (normalisedPoint.y >= mapSize[1])
+        {
+            normalisedPoint.y = mapSize[1] - 1;
+        }
+
+        map[normalisedPoint.x, normalisedPoint.y] = true;
+    }
+}
 
 
 World world = new(map, CellularRuleBuilder.GetRules(random));
