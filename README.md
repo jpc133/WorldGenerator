@@ -5,6 +5,10 @@ These are a set of tools to help with generating 2D square cell grid based world
 ## World Generator
 The world generator project is for testing and tieing the tools together to generate a world, the actual tools are designed to be used from a game project rather than from this project so I've used this project for testing rather than 'production' use.
 
+## A Star
+
+A* / A Star is a pathfinding algorithm which uses heuristics to find a short (but not always the shortest) path. Currently the pathing is used to generate roads between cities.
+
 ## L-System
 
 L-systems are often used for generating plants / trees but can also be used for fractal style generation of things such as roads. In this project it refers to a process for building a sentence based on an initial sentence that is transformed through applying rules, these sentences are formed of letters which are used as instructions for generating structures.
