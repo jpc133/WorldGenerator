@@ -1,6 +1,7 @@
 ﻿using OpenSimplex;
 using System.Text;
 using WorldGenerator;
+using WorldGenerator.AStar;
 using WorldGenerator.CellularAutomata.Engine;
 using WorldGenerator.CellularAutomata.Engine.Rules;
 using WorldGenerator.Geometry;
@@ -17,9 +18,10 @@ int cityNodeRange = 10;
 bool[,] map = (bool[,])Array.CreateInstance(typeof(bool), mapSize[0], mapSize[1]);
 
 List<Point[]> cityNodes = new();
+
 for (int i = 0; i < cityNodesToGenerate; i++)
 {
-    Point cityNode = new Point(random.Next(0, mapSize[0]), random.Next(0, mapSize[1]));
+    Point cityNode = new(random.Next(0, mapSize[0]), random.Next(0, mapSize[1]));
     Point[] interCityNodes = new Point[interCityNodesToGenerate];
     for (int i2 = 0; i2 < interCityNodesToGenerate; i2++)
     {
@@ -55,6 +57,22 @@ foreach (Point[] interCityPoints in cityNodes)
     }
 }
 
+int[] closestCity = new int[cityNodes.Count];
+for (int i = 0; i < cityNodes.Count; i++)
+{
+    int lowestDistance = int.MaxValue;
+    int lowestDistanceIndex = 0;
+    for (int j = 0; j < cityNodes.Count; j++)
+    {
+        int tempDistance = (int)cityNodes[i][0].ManhattanDistance(cityNodes[j][0]);
+        if (tempDistance < lowestDistance && i != j)
+        {
+            lowestDistance = tempDistance;
+            lowestDistanceIndex = j;
+        }
+    }
+    closestCity[i] = lowestDistanceIndex;
+}
 
 World world = new(map, CellularRuleBuilder.GetRules(random));
 
@@ -123,7 +141,54 @@ for (int x = 0; x < roadsLayer.GetLength(0); x++)
     }
 }
 
+//0, land
+//1, road
+//2, tree
+//3, rock
+//4, building
+int[,] combinedLayer = new int[roadsLayer.GetLength(0), roadsLayer.GetLength(1)];
+int[] baseToCombinedMap = { 0, 2, 3 };
+
+generateCombinedLayer();
+
+for (int i = 0; i < cityNodes.Count; i++)
+{
+    Pathfinder pathfinder = new(combinedLayer);
+    Point[] road = pathfinder.FindPath(cityNodes[i][0], cityNodes[closestCity[i]][0]).ToArray();
+    for (int j = 0; j < road.Length; j++)
+    {
+        roadsLayer[road[j].x, road[j].y] = 1;
+    }
+    generateCombinedLayer();
+}
+
 printWorld();
+
+void generateCombinedLayer()
+{
+    for (int y = 0; y < roadsLayer.GetLength(1); y++)
+    {
+        for (int x = 0; x < roadsLayer.GetLength(0); x++)
+        {
+            if (roadsLayer[x, y] == 1)
+            {
+                combinedLayer[x, y] = 1;
+                continue;
+            }
+
+            if (buildingLayer[x, y] == 0)
+            {
+                combinedLayer[x, y] = 4;
+                continue;
+            }
+            else
+            {
+                combinedLayer[x, y] = baseToCombinedMap[baseLayer[x, y]];
+                continue;
+            }
+        }
+    }
+}
 
 void printWorld()
 {

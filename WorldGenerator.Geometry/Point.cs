@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WorldGenerator.Geometry
 {
-    public struct Point
+    public struct Point : IEquatable<Point>
     {
         public int x;
         public int y;
@@ -15,6 +15,31 @@ namespace WorldGenerator.Geometry
         {
             this.x = x;
             this.y = y;
+        }
+
+        public bool Equals(Point other)
+        {
+            return x == other.x && y == other.y;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Point point && Equals(point);
+        }
+
+        public override int GetHashCode()
+        {
+            return Tuple.Create(x, y).GetHashCode();
+        }
+
+        public static bool operator ==(Point left, Point right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Point left, Point right)
+        {
+            return !(left == right);
         }
     }
 

@@ -22,22 +22,13 @@ namespace WorldGenerator.Geometry
         public Direction(CompassDirections compassDirection)
         {
             CompassDirection = compassDirection;
-            switch (compassDirection)
+            DirectionVector = compassDirection switch
             {
-                default:
-                case CompassDirections.North:
-                    DirectionVector = new int[] { 0, 1 };
-                    break;
-                case CompassDirections.East:
-                    DirectionVector = new int[] { 1, 0 };
-                    break;
-                case CompassDirections.South:
-                    DirectionVector = new int[] { 0, -1 };
-                    break;
-                case CompassDirections.West:
-                    DirectionVector = new int[] { -1, 0 };
-                    break;
-            }
+                CompassDirections.East => new int[] { 1, 0 },
+                CompassDirections.South => new int[] { 0, -1 },
+                CompassDirections.West => new int[] { -1, 0 },
+                _ => new int[] { 0, 1 },
+            };
         }
     }
 
@@ -45,34 +36,24 @@ namespace WorldGenerator.Geometry
     {
         public static Direction Rotate90Clockwise(this Direction direction)
         {
-            switch (direction.CompassDirection)
+            return direction.CompassDirection switch
             {
-                default:
-                case CompassDirections.North:
-                    return new Direction(CompassDirections.East);
-                case CompassDirections.East:
-                    return new Direction(CompassDirections.South);
-                case CompassDirections.South:
-                    return new Direction(CompassDirections.West);
-                case CompassDirections.West:
-                    return new Direction(CompassDirections.North);
-            }
+                CompassDirections.East => new Direction(CompassDirections.South),
+                CompassDirections.South => new Direction(CompassDirections.West),
+                CompassDirections.West => new Direction(CompassDirections.North),
+                _ => new Direction(CompassDirections.East),
+            };
         }
 
         public static Direction Rotate90CounterClockwise(this Direction direction)
         {
-            switch (direction.CompassDirection)
+            return direction.CompassDirection switch
             {
-                default:
-                case CompassDirections.North:
-                    return new Direction(CompassDirections.West);
-                case CompassDirections.East:
-                    return new Direction(CompassDirections.North);
-                case CompassDirections.South:
-                    return new Direction(CompassDirections.East);
-                case CompassDirections.West:
-                    return new Direction(CompassDirections.South);
-            }
+                CompassDirections.East => new Direction(CompassDirections.North),
+                CompassDirections.South => new Direction(CompassDirections.East),
+                CompassDirections.West => new Direction(CompassDirections.South),
+                _ => new Direction(CompassDirections.West),
+            };
         }
     }
 }
